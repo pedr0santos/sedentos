@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { supabase, mensagemErro } from '../../lib/supabase';
+import { supabase, mensagemErro, chamarFuncao } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
 import { dataCulto, ESTADOS, STATUS_CULTO, lerFila, gravarFila } from '../../lib/chamada';
 import { Carregando, Aviso, Campo } from '../../components/Visual';
@@ -227,7 +227,7 @@ export default function ChamadaCulto() {
     if (error) { setErro(mensagemErro(error)); return; }
     let envio = null;
     try {
-      const r = await supabase.functions.invoke('avisar-faltas', { body: { culto_id: id } });
+      const r = await chamarFuncao('avisar-faltas', { culto_id: id });
       envio = r.error ? { erro: true } : r.data;
     } catch { envio = { erro: true }; }
     setResultado({ ...data, envio });

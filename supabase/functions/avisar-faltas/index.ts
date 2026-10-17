@@ -45,7 +45,7 @@ function htmlEmail(nome: string, itens: { nome: string; seq: number; tipo: strin
   </div></body></html>`;
 }
 
-Deno.serve(async (req) => {
+export const handler = async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
   try {
     const { culto_id } = await req.json();
@@ -133,4 +133,7 @@ Deno.serve(async (req) => {
   } catch (e) {
     return json({ erro: String((e as Error).message ?? e) }, 500);
   }
-});
+};
+
+// No Supabase hospedado o arquivo roda sozinho; no Railway quem serve é edge/main.ts.
+if (import.meta.main) Deno.serve(handler);

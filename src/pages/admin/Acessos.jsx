@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase, mensagemErro } from '../../lib/supabase';
+import { supabase, mensagemErro, chamarFuncao } from '../../lib/supabase';
 import { formatarDataHora, iniciais } from '../../lib/formato';
 import { copiarTexto } from '../../lib/rede';
 import { Titulo, Carregando, Aviso, Campo } from '../../components/Visual';
@@ -33,7 +33,7 @@ const USUARIO_OK = /^[a-z0-9][a-z0-9._-]{2,29}$/;
 
 /** Chama a Edge Function e devolve a mensagem de erro em português, quando houver. */
 async function gerenciar(acao, corpo) {
-  const { data, error } = await supabase.functions.invoke('gerenciar-secretarios', { body: { acao, ...corpo } });
+  const { data, error } = await chamarFuncao('gerenciar-secretarios', { acao, ...corpo });
   if (error) {
     let msg = error.message;
     try { const j = await error.context?.json(); if (j?.erro) msg = j.erro; } catch { /* resposta sem JSON */ }

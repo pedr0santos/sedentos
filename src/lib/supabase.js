@@ -13,6 +13,28 @@ export const supabase = demo ? criarClienteDemo() : createClient(url || 'http://
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'implicit' },
 });
 
+const funcoesUrl = (import.meta.env.VITE_FUNCOES_URL || '').replace(/\/$/, '');
+
+/** Chama uma função de servidor; com VITE_FUNCOES_URL vai direto ao serviço no Railway. Devolve { data, error }. */
+export async function chamarFuncao(nome, body) {
+  if (demo || !funcoesUrl) return supabase.functions.invoke(nome, { body });
+  try {
+    const { data: s } = await supabase.auth.getSession();
+    const r = await fetch(`${funcoesUrl}/${nome}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${s.session?.access_token ?? ''}` },
+      body: JSON.stringify(body),
+    });
+    const json = await r.json().catch(() => null);
+    if (r.ok) return { data: json, error: null };
+    const error = new Error(json?.erro || `Erro ${r.status}`);
+    error.context = { json: async () => json };
+    return { data: null, error };
+  } catch (e) {
+    return { data: null, error: e };
+  }
+}
+
 /**
  * Secretários entram com USUÁRIO e senha. Por baixo, o login usa um e-mail técnico
  * "<usuario>@<domínio>"; precisa ser o mesmo SECRETARIO_DOMINIO da Edge Function.
