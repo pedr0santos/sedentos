@@ -1,0 +1,97 @@
+/* ==========================================================
+   Tema Sedentos — TODAS as cores e fontes saem daqui.
+   ========================================================== */
+
+/* Para usar a Nexa: coloque os arquivos em /public/fonts e descomente.
+@font-face { font-family: 'Nexa'; src: url('/fonts/Nexa-Book.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Nexa'; src: url('/fonts/Nexa-XBold.woff2') format('woff2'); font-weight: 800; font-display: swap; }
+*/
+
+:root {
+  /* Paleta (valores RGB para permitir transparência no Tailwind) */
+  --primary-rgb: 61 91 169;      /* #3D5BA9 */
+  --secondary-rgb: 41 171 226;   /* #29ABE2 */
+  --dark-rgb: 51 51 51;          /* #333333 */
+  --bg-rgb: 11 17 31;            /* #0B111F */
+  --text-rgb: 255 255 255;       /* #FFFFFF */
+  --text-muted-rgb: 184 194 214; /* #B8C2D6 */
+  --success-rgb: 46 204 113;     /* #2ECC71 */
+  --warning-rgb: 245 166 35;     /* #F5A623 */
+  --danger-rgb: 229 72 77;       /* #E5484D */
+
+  --primary: rgb(var(--primary-rgb));
+  --secondary: rgb(var(--secondary-rgb));
+  --dark: rgb(var(--dark-rgb));
+  --bg: rgb(var(--bg-rgb));
+  --text: rgb(var(--text-rgb));
+  --text-muted: rgb(var(--text-muted-rgb));
+  --success: rgb(var(--success-rgb));
+  --warning: rgb(var(--warning-rgb));
+  --danger: rgb(var(--danger-rgb));
+  --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+
+  /* Troque para 'Nexa', sans-serif quando tiver os arquivos */
+  --font: 'Montserrat', system-ui, sans-serif;
+  --font-titulo: var(--font);
+
+  color-scheme: dark;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root { min-height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1, h2, h3 { font-family: var(--font-titulo); font-weight: 800; }
+  a { color: var(--secondary); }
+  :focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-[10px] px-5 text-[15px] font-extrabold
+           transition duration-150 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primario { @apply btn text-texto shadow-[0_8px_24px_rgb(var(--secondary-rgb)/0.25)] hover:brightness-110 active:translate-y-px; background: var(--gradient); }
+  .btn-secundario { @apply btn border-[1.5px] border-secondary bg-transparent font-bold text-texto hover:bg-secondary/10; }
+  .btn-perigo { @apply btn border-[1.5px] border-danger bg-transparent font-bold text-danger hover:bg-danger/10; }
+  .btn-texto { @apply inline-flex min-h-[44px] items-center gap-2 px-2 text-sm font-bold text-secondary hover:brightness-125; }
+
+  .rotulo { @apply text-[13px] font-bold text-muted; }
+  .campo {
+    @apply h-[50px] w-full rounded-[10px] border border-secondary/20 bg-dark/60 px-3.5 text-[15px] font-medium text-texto
+           outline-none transition duration-150 placeholder:text-muted/60 focus:border-secondary focus:ring-[3px] focus:ring-secondary/20
+           disabled:bg-dark/30 disabled:text-muted;
+  }
+  .campo-erro { @apply border-danger/70 bg-danger/5 focus:border-danger focus:ring-danger/20; }
+
+  .cartao { @apply rounded-2xl border border-secondary/15 bg-dark/50 backdrop-blur-sm; }
+  .chip {
+    @apply inline-flex min-h-[36px] items-center gap-1.5 rounded-full border border-secondary/25 px-3.5 text-[13px] font-semibold
+           text-texto/85 transition hover:bg-secondary/10;
+  }
+  .chip-ativo { @apply border-secondary bg-secondary/20 text-texto; }
+  .badge { @apply inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-extrabold; }
+}
+
+/* Animações discretas */
+@keyframes subir { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes pop { 0% { transform: scale(.6); opacity: 0 } 70% { transform: scale(1.06); opacity: 1 } 100% { transform: scale(1) } }
+@keyframes anel { 0% { transform: scale(.8); opacity: .7 } 100% { transform: scale(1.7); opacity: 0 } }
+@keyframes tracar { from { stroke-dashoffset: 40 } to { stroke-dashoffset: 0 } }
+.anim-subir { animation: subir .2s ease-out both; }
+.anim-pop { animation: pop .45s cubic-bezier(.2,.9,.3,1.2) both; }
+.anim-anel { animation: anel 1.6s ease-out .3s infinite; }
+.anim-tracar { stroke-dasharray: 40; animation: tracar .4s ease-out .35s both; }
+@media (prefers-reduced-motion: reduce) {
+  .anim-subir, .anim-pop, .anim-anel, .anim-tracar { animation: none; }
+}

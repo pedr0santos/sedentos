@@ -1,1 +1,0 @@
-ALTER TABLE `discipulators` ADD `photoUrl` text;

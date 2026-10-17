@@ -1,1 +1,0 @@
-ALTER TABLE `youths` MODIFY COLUMN `discipulatorId` int;
