@@ -130,12 +130,18 @@ importers:
       cookie:
         specifier: ^1.0.2
         version: 1.0.2
+      cross-env:
+        specifier: ^10.1.0
+        version: 10.1.0
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
       dotenv:
         specifier: ^17.2.2
         version: 17.2.3
+      drizzle-kit:
+        specifier: ^0.31.5
+        version: 0.31.5
       drizzle-orm:
         specifier: ^0.44.5
         version: 0.44.6(mysql2@3.15.1)
@@ -248,12 +254,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.6)
-      cross-env:
-        specifier: ^10.1.0
-        version: 10.1.0
-      drizzle-kit:
-        specifier: ^0.31.4
-        version: 0.31.5
       esbuild:
         specifier: ^0.25.0
         version: 0.25.10
@@ -266,6 +266,9 @@ importers:
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
+      railway:
+        specifier: ^3.16.0
+        version: 3.16.0
       tailwindcss:
         specifier: ^4.1.14
         version: 4.1.14
@@ -1029,6 +1032,11 @@ packages:
 
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+
+  '@graphql-typed-document-node/core@3.2.0':
+    resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
   '@hookform/resolvers@5.2.2':
     resolution: {integrity: sha512-A/IxlMLShx3KjV/HeTcTfaMxdwy690+L/ZADoeaTltLx+CVuzkeVIPuybK3jrRfw7YZnmdKsVVHAlEPIAEUNlA==}
@@ -3156,6 +3164,10 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
+  graphql@16.14.2:
+    resolution: {integrity: sha512-Chq1s4CY7jmh8gO2qvLIJyfCDIN+EHLFW/9iShnp1z8FjBQMoodWP1kDC36VAMXXIvAjj4ARa7ntfAV2BrjsbA==}
+    engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
+
   hachure-fill@0.5.2:
     resolution: {integrity: sha512-3GKBOn+m2LX9iq+JC1064cSFprJY4jL1jCXTcpnfER5HYE2l/4EfWSGzkPa/ZDBmYI0ZOEj5VHV/eKnPGkHuOg==}
 
@@ -3786,6 +3798,11 @@ packages:
 
   quansync@0.2.11:
     resolution: {integrity: sha512-AifT7QEbW9Nri4tAwR5M/uzpBuqfZf+zwaEM/QkzEjj7NBuFD2rBuy0K3dE+8wltbezDV7JMA0WfnCPYRSYbXA==}
+
+  railway@3.16.0:
+    resolution: {integrity: sha512-//vKXubZpO07iJgNyoS+9Ee3pKk+3wE+0KAJPI28GuSKqXG30UeWT4xBkkd6TYuZ4HNh7QPvkVR72Swbmq5kXw==}
+    engines: {node: '>=22'}
+    hasBin: true
 
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
@@ -5308,6 +5325,10 @@ snapshots:
       react-dom: 19.2.1(react@19.2.1)
 
   '@floating-ui/utils@0.2.10': {}
+
+  '@graphql-typed-document-node/core@3.2.0(graphql@16.14.2)':
+    dependencies:
+      graphql: 16.14.2
 
   '@hookform/resolvers@5.2.2(react-hook-form@7.64.0(react@19.2.1))':
     dependencies:
@@ -7586,6 +7607,8 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
+  graphql@16.14.2: {}
+
   hachure-fill@0.5.2: {}
 
   has-symbols@1.1.0: {}
@@ -8470,6 +8493,11 @@ snapshots:
       side-channel: 1.1.0
 
   quansync@0.2.11: {}
+
+  railway@3.16.0:
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.14.2)
+      graphql: 16.14.2
 
   range-parser@1.2.1: {}
 
