@@ -25,8 +25,10 @@ export function BadgePapel({ papel, cargo }) {
 export function Modal({ titulo, aberto, aoFechar, children, largura = 'max-w-lg' }) {
   const ref = useRef(null);
   useEffect(() => {
+    if (aberto) ref.current?.focus();
+  }, [aberto]);
+  useEffect(() => {
     if (!aberto) return undefined;
-    ref.current?.focus();
     const esc = (e) => e.key === 'Escape' && aoFechar();
     window.addEventListener('keydown', esc);
     return () => window.removeEventListener('keydown', esc);
