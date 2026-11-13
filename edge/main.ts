@@ -1,10 +1,12 @@
 // Serviço das Edge Functions no Railway: um único servidor Deno que roteia pelo último trecho do caminho.
 import { handler as gerenciarSecretarios } from './functions/gerenciar-secretarios/index.ts';
 import { handler as avisarFaltas } from './functions/avisar-faltas/index.ts';
+import { handler as avisarAniversarios } from './functions/avisar-aniversarios/index.ts';
 
 const rotas: Record<string, (req: Request) => Promise<Response>> = {
   'gerenciar-secretarios': gerenciarSecretarios,
   'avisar-faltas': avisarFaltas,
+  'avisar-aniversarios': avisarAniversarios,
 };
 
 Deno.serve({ hostname: '0.0.0.0', port: Number(Deno.env.get('PORT') ?? 8000) }, (req) => {

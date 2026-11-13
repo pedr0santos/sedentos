@@ -292,6 +292,21 @@ O jovem **não vê** a própria frequência nem os avisos.
 
 A função `avisar-faltas` é chamada ao fechar a chamada. Ela manda **um e-mail por discipulador** com a lista de quem faltou e um botão para os avisos. Sem a configuração, os avisos continuam funcionando no sistema; só o e-mail não sai.
 
+### Aviso de aniversário (e-mail diário ao discipulador)
+A função `avisar-aniversarios` manda **um e-mail por discipulador** com os discípulos que fazem aniversário no dia (fuso de Brasília). Usa o mesmo Resend.
+1. Aplique a migração `20261022000000_avisos_aniversario.sql` e cadastre o segredo `CRON_SECRET` (um texto longo e aleatório).
+2. Publique: `npx supabase functions deploy avisar-aniversarios --no-verify-jwt`.
+3. Agende uma chamada diária (ex.: 9h UTC = 6h em Brasília) com o cabeçalho `x-cron-secret`:
+   ```sql
+   select cron.schedule('avisar-aniversarios', '0 9 * * *', $$
+     select net.http_post(
+       url := 'https://SEU-PROJETO.supabase.co/functions/v1/avisar-aniversarios',
+       headers := jsonb_build_object('x-cron-secret', 'SEU-CRON-SECRET', 'Content-Type', 'application/json'),
+       body := '{}'::jsonb) $$);
+   ```
+   (exige as extensões `pg_cron` e `pg_net`). No Railway, use um cron que faça `POST` em `/avisar-aniversarios` com o mesmo cabeçalho.
+4. Para testar, faça o `POST` à mão: a resposta traz `aniversariantes`, `emails`, `sem_email` e `erros` (inclui o motivo se o Resend recusar).
+
 ### Ativar o push (celular)
 1. Gere as chaves: `npx web-push generate-vapid-keys`.
 2. Cadastre-as nos segredos da função:
