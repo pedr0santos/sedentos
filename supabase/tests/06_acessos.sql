@@ -82,6 +82,7 @@ declare f text;
 begin
   foreach f in array array[
     'select public.criar_culto_extra(''2026-08-22'')',
+    'select public.excluir_culto(''72000000-0000-0000-0000-000000000003'')',
     'select * from public.listar_duplicados()',
     'select * from public.rede_atribuir(array[''40000000-0000-0000-0000-0000000000b3''::uuid], null)',
     'select * from public.cuidado_da_rede()',

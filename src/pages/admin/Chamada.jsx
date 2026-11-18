@@ -21,6 +21,7 @@ export default function Chamada() {
   const [contagens, setContagens] = useState({});
   const [msg, setMsg] = useState(null);
   const [cancelar, setCancelar] = useState(null);
+  const [excluir, setExcluir] = useState(null);
   const [obs, setObs] = useState('');
   const [extra, setExtra] = useState(false);
   const [novo, setNovo] = useState({ data: '', titulo: '' });
@@ -62,6 +63,15 @@ export default function Chamada() {
     setOcupado(false);
     if (error) { setMsg({ tipo: 'erro', texto: mensagemErro(error) }); } else setMsg({ tipo: 'ok', texto: `Culto de ${dataCulto(cancelar.data)} cancelado.` });
     setCancelar(null); setObs('');
+    carregar();
+  };
+
+  const confirmarExcluir = async () => {
+    setOcupado(true);
+    const { error } = await supabase.rpc('excluir_culto', { p_culto: excluir.id });
+    setOcupado(false);
+    if (error) { setMsg({ tipo: 'erro', texto: mensagemErro(error) }); } else setMsg({ tipo: 'ok', texto: `Culto de ${dataCulto(excluir.data)} excluído.` });
+    setExcluir(null);
     carregar();
   };
 
@@ -118,6 +128,10 @@ export default function Chamada() {
               className={`btn-texto text-[13px] ${destaque ? 'text-texto' : 'text-muted'}`}>Cancelar culto</button>
           )}
           {c.status === 'cancelado' && <button type="button" className="btn-texto text-[13px]" onClick={() => reativar(c)}>Reativar</button>}
+          {admin && (
+            <button type="button" onClick={() => setExcluir(c)}
+              className={`btn-texto text-[13px] ${destaque ? 'text-texto' : 'text-muted'}`}>Excluir culto</button>
+          )}
         </div>
       </div>
     );
@@ -161,6 +175,20 @@ export default function Chamada() {
         <div className="flex flex-wrap justify-end gap-2.5">
           <button type="button" className="btn-secundario" onClick={() => setCancelar(null)}>Voltar</button>
           <button type="button" className="btn-perigo" disabled={ocupado} onClick={confirmarCancelar}>Cancelar culto</button>
+        </div>
+      </Modal>
+
+      <Modal titulo={excluir ? `Excluir o culto de ${dataCulto(excluir.data)}?` : ''} aberto={Boolean(excluir)} aoFechar={() => setExcluir(null)}>
+        <p className="m-0 text-sm text-muted">Esta ação não pode ser desfeita.</p>
+        {excluir?.status === 'fechado' && (
+          <Aviso tipo="alerta">As presenças e os avisos deste culto serão apagados, e a frequência e a sequência de faltas serão recalculadas.</Aviso>
+        )}
+        {excluir && !excluir.extra && excluir.data >= hoje && (
+          <p className="m-0 text-sm text-muted">Este é um sábado regular: ele pode reaparecer na geração automática. Para só não contar, use Cancelar culto.</p>
+        )}
+        <div className="flex flex-wrap justify-end gap-2.5">
+          <button type="button" className="btn-secundario" onClick={() => setExcluir(null)}>Voltar</button>
+          <button type="button" className="btn-perigo" disabled={ocupado} onClick={confirmarExcluir}>Excluir culto</button>
         </div>
       </Modal>
 

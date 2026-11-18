@@ -245,7 +245,7 @@ Rode a terceira migração, `supabase/migrations/20261019000000_chamada_cultos.s
 ### Fechar
 - No fim do culto, toque em **Fechar chamada**. O sistema mostra quantas pessoas ficarão com falta, quantos discipuladores serão avisados e a lista para uma última conferência.
 - Os avisos saem **uma única vez**, nesse momento. Fechar de novo não duplica nada.
-- Um culto **cancelado** (botão "Cancelar culto") não conta em nenhuma estatística. Também é possível criar um **culto extra** em outra data.
+- Um culto **cancelado** (botão "Cancelar culto") não conta em nenhuma estatística. Também é possível criar um **culto extra** em outra data. Administradores podem **excluir** um culto (inclusive fechado): presenças e avisos dele são apagados e a frequência é recalculada; sábados regulares futuros reaparecem na geração automática.
 
 ### Corrigir
 Abra o culto fechado (**Ver resumo e corrigir**), toque na pessoa e escolha presente, falta ou justificada.

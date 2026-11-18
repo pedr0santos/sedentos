@@ -173,4 +173,21 @@ begin
   assert not exists (select 1 from public.cultos where data = public.hoje_sp()), 'não gera o culto de hoje';
 end $$;
 \echo 'OK geração dos sábados'
+-- 7) Excluir culto (admin): leva presenças e avisos junto; não-admin é barrado
+select pg_temp.entrar('ch.disc1@rede.org');
+do $$ begin
+  begin perform public.excluir_culto('50000000-0000-0000-0000-000000000001'); raise exception 'não-admin excluiu';
+  exception when raise_exception then if sqlerrm not like 'Apenas%' then raise; end if; end;
+end $$;
+select pg_temp.entrar('lider@sedentos.org');
+do $$ begin
+  assert exists (select 1 from public.notificacoes where culto_id = '50000000-0000-0000-0000-000000000001'), 'pré-condição: avisos';
+  perform public.excluir_culto('50000000-0000-0000-0000-000000000001');
+  assert not exists (select 1 from public.cultos where id = '50000000-0000-0000-0000-000000000001'), 'culto não excluído';
+  assert not exists (select 1 from public.presencas where culto_id = '50000000-0000-0000-0000-000000000001'), 'presenças ficaram';
+  assert not exists (select 1 from public.notificacoes where culto_id = '50000000-0000-0000-0000-000000000001'), 'avisos ficaram';
+  begin perform public.excluir_culto('50000000-0000-0000-0000-000000000001'); raise exception 'excluiu duas vezes';
+  exception when raise_exception then if sqlerrm not like 'Culto não encontrado%' then raise; end if; end;
+end $$;
+\echo 'OK excluir culto'
 \echo 'TODOS OS TESTES DA CHAMADA PASSARAM'

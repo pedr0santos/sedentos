@@ -617,6 +617,14 @@ const rpcs = {
     return null;
   },
   reativar_culto: ({ p_culto }) => { exigirChamada(); const c = culto(p_culto); if (c.status === 'cancelado') c.status = 'agendado'; return null; },
+  excluir_culto: ({ p_culto }) => {
+    exigirAdmin();
+    if (!culto(p_culto)) erro('Culto não encontrado.');
+    cultos = cultos.filter((c) => c.id !== p_culto);
+    presencas = presencas.filter((p) => p.culto_id !== p_culto);
+    notificacoes = notificacoes.filter((n) => n.culto_id !== p_culto);
+    return null;
+  },
   abrir_chamada: ({ p_culto }) => {
     exigirChamada();
     const c = culto(p_culto);
